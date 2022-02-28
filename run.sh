@@ -72,7 +72,7 @@ do
    
    
    echo "Waiting for $TTL seconds."
-   STEPS = $expr( $TTL / 30 )
+   STEPS = $(expr $TTL / 30 )
    for i in {1..29} ; do
        echo -n '['
        for ((j=0; j<i; j++)) ; do echo -n '#'; done
