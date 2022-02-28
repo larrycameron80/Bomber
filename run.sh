@@ -4,7 +4,9 @@ INSTANCE_PER_BOMB=$2
 RESOURCES_FILE_RIPPER=$3
 INSTANCE_PER_RIPPER=$4
 TTL=$5
+
 LOOP_COUNT = 1
+STEPS = $(expr $TTL / 30 )
 
 echo "Bombardier file: $RESOURCES_FILE_BOMB with $INSTANCE_PER_BOMB instances per url"
 echo "Ripper file: $RESOURCES_FILE_RIPPER with $INSTANCE_PER_RIPPER instances per url"
@@ -72,7 +74,6 @@ do
    
    
    echo "Waiting for $TTL seconds."
-   STEPS = $(expr $TTL / 30 )
    for i in {1..29} ; do
        echo -n '['
        for ((j=0; j<i; j++)) ; do echo -n '#'; done
