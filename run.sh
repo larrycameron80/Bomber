@@ -17,12 +17,12 @@ do
    
    echo "Killing all running docker instances..."
    sudo docker rm -f $(sudo docker ps -aq) >/dev/null 2>&1 || true
-   for i in {1..5} ; do
+   for i in {0..4} ; do
        echo -n '['
-       for ((j=0; j<i; j++)) ; do echo -n ' '; done
-       echo -n '=>'
+       for ((j=0; j<i; j++)) ; do echo -n '#'; done
+       echo -n ''
        for ((j=i; j<5; j++)) ; do echo -n ' '; done
-       echo -n "] $i"0% $'\r'
+       echo -n "] $i / 5s" $'\r'
        sleep 1
    done
    echo "Killed all instances."
@@ -30,12 +30,12 @@ do
    
    echo "Starting VPN (from docker-compose)..."
    sudo docker-compose up -d
-   for i in {1..15} ; do
+   for i in {0..14} ; do
        echo -n '['
-       for ((j=0; j<i; j++)) ; do echo -n ' '; done
-       echo -n '=>'
-       for ((j=i; j<15; j++)) ; do echo -n ' '; done
-       echo -n "] $i"0% $'\r'
+       for ((j=0; j<i; j++)) ; do echo -n '#'; done
+       echo -n ''
+       for ((j=i; j<14; j++)) ; do echo -n ' '; done
+       echo -n "] $i / 15s" $'\r'
        sleep 1
    done
    echo "VPN started."
@@ -72,6 +72,7 @@ do
    
    
    echo "Waiting for $TTL seconds."
+   STEPS = $expr( $TTL / 30 )
    for i in {1..29} ; do
        echo -n '['
        for ((j=0; j<i; j++)) ; do echo -n '#'; done
