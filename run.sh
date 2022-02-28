@@ -72,6 +72,13 @@ do
    
    
    echo "Waiting for $TTL seconds."
-   sleep $TTL
+   for i in {1..30} ; do
+       echo -n '['
+       for ((j=0; j<i; j++)) ; do echo -n ' '; done
+       echo -n '=>'
+       for ((j=i; j<15; j++)) ; do echo -n ' '; done
+       echo -n "] $i"0% $'\r'
+       sleep (30 / $TTL)
+   done
    echo "Loop ended."
 done
