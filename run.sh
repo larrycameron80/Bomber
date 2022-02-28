@@ -6,8 +6,8 @@ INSTANCE_PER_RIPPER=$4
 TTL=$5
 
 
-LOOP_COUNT = 1
-STEPS = $(expr $TTL / 30)
+LOOP_COUNT=1
+STEPS=$(expr $TTL / 30)
 echo "$STEPS"
 
 
