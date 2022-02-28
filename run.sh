@@ -4,8 +4,8 @@ INSTANCE_PER_BOMB=$2
 RESOURCES_FILE_RIPPER=$3
 INSTANCE_PER_RIPPER=$4
 
-echo "Bombardier file: $RESOURCES_FILE_BOMB"
-echo "Ripper file: $RESOURCES_FILE_RIPPER"
+echo "Bombardier file: $RESOURCES_FILE_BOMB with $INSTANCE_PER_BOMB instances per url"
+echo "Ripper file: $RESOURCES_FILE_RIPPER with $INSTANCE_PER_RIPPER instances per url"
 
 
 echo "Killing all running docker instances..."
