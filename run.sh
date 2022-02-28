@@ -32,6 +32,28 @@ do
        sleep 1
    done
    echo "Killed all instances."
+   
+   
+   echo "Restarting VPN for a new server..."
+   sudo nordvpn disconnect
+   for i in {0..4} ; do
+       echo -n '['
+       for ((j=0; j<i; j++)) ; do echo -n '#'; done
+       echo -n ''
+       for ((j=i; j<5; j++)) ; do echo -n ' '; done
+       echo -n "] $i / 5s" $'\r'
+       sleep 1
+   done
+   sudo nordvpn connect
+   for i in {0..4} ; do
+       echo -n '['
+       for ((j=0; j<i; j++)) ; do echo -n '#'; done
+       echo -n ''
+       for ((j=i; j<5; j++)) ; do echo -n ' '; done
+       echo -n "] $i / 5s" $'\r'
+       sleep 1
+   done
+   echo "Connected to VPN."
 
 
    echo "Starting Bombardier instances..."
