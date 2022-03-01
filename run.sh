@@ -32,19 +32,6 @@ do
        sleep 1
    done
    echo "Killed all instances."
-   
-   
-   echo "Starting VPN (from docker-compose)..."
-   sudo docker-compose up -d
-   for i in {0..14} ; do
-       echo -n '['
-       for ((j=0; j<i; j++)) ; do echo -n '#'; done
-       echo -n ''
-       for ((j=i; j<14; j++)) ; do echo -n ' '; done
-       echo -n "] $i / 15s" $'\r'
-       sleep 1
-   done
-   echo "VPN started."
 
 
    echo "Starting Bombardier instances..."
