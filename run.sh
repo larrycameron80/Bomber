@@ -21,7 +21,7 @@ do
    echo "Starting loop $LOOP_COUNT..."
 
 
-   echo "Killing all running docker instances..."
+   echo "Killing all Bombardier instances..."
    sudo docker rm -f $(sudo docker ps -aq --filter ancestor=alpine/bombardier) >/dev/null 2>&1 || true
    for i in {0..4} ; do
        echo -n '['
@@ -31,7 +31,7 @@ do
        echo -n "] $i / 5s" $'\r'
        sleep 1
    done
-   echo "Killed all instances."
+   echo "Killed all Bombardier instances."
 
 
    echo "Starting Bombardier instances..."
