@@ -22,7 +22,7 @@ do
 
 
    echo "Killing all running docker instances..."
-   sudo docker rm -f $(sudo docker ps -aq) >/dev/null 2>&1 || true
+   sudo docker rm -f $(sudo docker ps -aq --filter ancestor=alpine/bombardier) >/dev/null 2>&1 || true
    for i in {0..4} ; do
        echo -n '['
        for ((j=0; j<i; j++)) ; do echo -n '#'; done
