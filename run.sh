@@ -86,7 +86,7 @@ while true; do
   echo "Loop ended."
   
   
-  if [ $(expr $LOOP_COUNT % 3) -eq $0 ]; then
+  if [[ "$(expr $LOOP_COUNT % 3)" -eq 0 ]] ; then
     echo "Taking a break for $TTL seconds."
     sudo bash vpn-down.sh
     sleep 5
