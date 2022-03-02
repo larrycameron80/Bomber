@@ -88,25 +88,5 @@ do
        echo -n "] $(expr $STEPS \* $i) / $TTL s" $'\r'
        sleep $STEPS
    done
-   LOOP_COUNT=$(expr $LOOP_COUNT + 1)
    echo "Loop ended."
-   
-   
-   if [[ $(expr $LOOP_COUNT % 3) -eq 0 ]]
-   then
-      echo "Taking a $TTL seconds break and resetting VPNS"
-      sudo bash vpn-down.sh
-      sleep 5
-      for i in {1..29} ; do
-         echo -n '['
-         for ((j=0; j<i; j++)) ; do echo -n '#'; done
-         echo -n ''
-         for ((j=i; j<30; j++)) ; do echo -n ' '; done
-         echo -n "] $(expr $STEPS \* $i) / $TTL s" $'\r'
-         sleep $STEPS
-      done
-      sudo bash vpn-up.sh
-      sleep 15
-      echo "Done taking a break. Let's get cracking!"
-   fi
 done
